@@ -1,23 +1,12 @@
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const productsData = require('../models/Products');
-
-const rootDirectory = require('../util/path');
+const productsController = require('../controllers/product')
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-    // res.sendFile(path.join(rootDirectory, 'views', 'shop.html'));
-    const data = fs.readFileSync(path.join(rootDirectory, 'models', 'Products.json'));
-    const prodData = JSON.parse(data);
+router.get('/', productsController.getProducts);
 
-    //utility function to generate rendered view
-    res.render('shop', {
-        pageTitle: 'Shop Page',
-        products: prodData
-    });
-});
+router.get('/show-product/:id', productsController.getOneProductById)
 
-//---------------------------- export method 1
+router.post('/delete-product', productsController.deleteProduct)
+
 module.exports = router;
